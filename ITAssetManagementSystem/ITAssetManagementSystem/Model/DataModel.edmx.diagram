@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3e9276eaa08f48c783a7d7f0d8982c26" Name="Diagram1">
+        <EntityTypeShape EntityType="FixAssetDBModel.AssetAssign" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FixAssetDBModel.Asset" Width="1.5" PointX="3.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="FixAssetDBModel.Category" Width="1.5" PointX="1.5" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FixAssetDBModel.Desposal" Width="1.5" PointX="3.75" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FixAssetDBModel.Maintenance" Width="1.5" PointX="3.75" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FixAssetDBModel.Stock" Width="1.5" PointX="6" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FixAssetDBModel.User" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FixAssetDBModel.Vendor" Width="1.5" PointX="3.75" PointY="18" IsExpanded="true" />
+        <AssociationConnector Association="FixAssetDBModel.FK_Asset_Assign_Stock" ManuallyRouted="false" />
+        <AssociationConnector Association="FixAssetDBModel.FK_Asset_Assign_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="FixAssetDBModel.FK_Assets_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="FixAssetDBModel.FK_Stocks_Assets" ManuallyRouted="false" />
+        <AssociationConnector Association="FixAssetDBModel.FK_Stock_Desposal" ManuallyRouted="false" />
+        <AssociationConnector Association="FixAssetDBModel.FK_Stock_Maintenance" ManuallyRouted="false" />
+        <AssociationConnector Association="FixAssetDBModel.FK_Stock_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="FixAssetDBModel.FK_Stock_Vendor" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

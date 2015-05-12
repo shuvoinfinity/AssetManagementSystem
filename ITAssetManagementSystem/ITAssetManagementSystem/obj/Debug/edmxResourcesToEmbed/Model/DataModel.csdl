@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FixAssetDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AssetAssign">
+    <Key>
+      <PropertyRef Name="AssetAssingId" />
+    </Key>
+    <Property Name="AssetAssingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="StockId" Type="Int32" Nullable="false" />
+    <Property Name="AssignDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="ReturnDate" Type="DateTime" Precision="0" />
+    <Property Name="ConditionOut" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="ConditionReturn" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Remarks" Type="Binary" MaxLength="50" FixedLength="false" />
+    <NavigationProperty Name="Stock" Relationship="Self.FK_Asset_Assign_Stock" FromRole="AssetAssign" ToRole="Stocks" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Asset_Assign_Users" FromRole="AssetAssign" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Asset">
+    <Key>
+      <PropertyRef Name="AssetId" />
+    </Key>
+    <Property Name="AssetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Manufacturer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AssetDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="Unit" Type="Int32" />
+    <Property Name="LastEditDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_Assets_Category" FromRole="Assets" ToRole="Categories" />
+    <NavigationProperty Name="Stocks" Relationship="Self.FK_Stocks_Assets" FromRole="Assets" ToRole="Stocks" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Assets" Relationship="Self.FK_Assets_Category" FromRole="Categories" ToRole="Assets" />
+  </EntityType>
+  <EntityType Name="Desposal">
+    <Key>
+      <PropertyRef Name="DesposalId" />
+    </Key>
+    <Property Name="DesposalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StockId" Type="Int32" Nullable="false" />
+    <Property Name="DesposalDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Note" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Stocks" Relationship="Self.FK_Stock_Desposal" FromRole="Desposal" ToRole="Stocks" />
+  </EntityType>
+  <EntityType Name="Maintenance">
+    <Key>
+      <PropertyRef Name="MaintenanceId" />
+    </Key>
+    <Property Name="MaintenanceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaintenanceDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="MaintenanceDetails" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <Property Name="MaintenancePerformBy" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <Property Name="MaintenanceCost" Type="Decimal" Precision="18" Scale="4" />
+    <NavigationProperty Name="Stocks" Relationship="Self.FK_Stock_Maintenance" FromRole="Maintenance" ToRole="Stocks" />
+  </EntityType>
+  <EntityType Name="Stock">
+    <Key>
+      <PropertyRef Name="StockId" />
+    </Key>
+    <Property Name="StockId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AssetCode" Type="Binary" MaxLength="4" FixedLength="false" Nullable="false" />
+    <Property Name="AssetId" Type="Int32" Nullable="false" />
+    <Property Name="ModelNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SerialNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Barcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <Property Name="AcquiredDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="VendorId" Type="Int32" Nullable="false" />
+    <Property Name="Warranty" Type="Int32" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DepartmentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="UserAssignDate" Type="DateTime" Precision="0" />
+    <Property Name="MaintenanceId" Type="Int32" />
+    <Property Name="DesposalId" Type="Int32" />
+    <NavigationProperty Name="AssetAssigns" Relationship="Self.FK_Asset_Assign_Stock" FromRole="Stocks" ToRole="AssetAssign" />
+    <NavigationProperty Name="Asset" Relationship="Self.FK_Stocks_Assets" FromRole="Stocks" ToRole="Assets" />
+    <NavigationProperty Name="Desposal" Relationship="Self.FK_Stock_Desposal" FromRole="Stocks" ToRole="Desposal" />
+    <NavigationProperty Name="Maintenance" Relationship="Self.FK_Stock_Maintenance" FromRole="Stocks" ToRole="Maintenance" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Stock_Users" FromRole="Stocks" ToRole="Users" />
+    <NavigationProperty Name="Vendor" Relationship="Self.FK_Stock_Vendor" FromRole="Stocks" ToRole="Vendors" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserEmail" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MobileNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Designation" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DepartmentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ExtentionNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AssetAssigns" Relationship="Self.FK_Asset_Assign_Users" FromRole="Users" ToRole="AssetAssign" />
+    <NavigationProperty Name="Stocks" Relationship="Self.FK_Stock_Users" FromRole="Users" ToRole="Stocks" />
+  </EntityType>
+  <EntityType Name="Vendor">
+    <Key>
+      <PropertyRef Name="VendorId" />
+    </Key>
+    <Property Name="VendorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Stocks" Relationship="Self.FK_Stock_Vendor" FromRole="Vendors" ToRole="Stocks" />
+  </EntityType>
+  <Association Name="FK_Asset_Assign_Stock">
+    <End Role="Stocks" Type="Self.Stock" Multiplicity="1" />
+    <End Role="AssetAssign" Type="Self.AssetAssign" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Stocks">
+        <PropertyRef Name="StockId" />
+      </Principal>
+      <Dependent Role="AssetAssign">
+        <PropertyRef Name="StockId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Asset_Assign_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="AssetAssign" Type="Self.AssetAssign" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="AssetAssign">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Assets_Category">
+    <End Role="Categories" Type="Self.Category" Multiplicity="1" />
+    <End Role="Assets" Type="Self.Asset" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="Assets">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Stocks_Assets">
+    <End Role="Assets" Type="Self.Asset" Multiplicity="1" />
+    <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Assets">
+        <PropertyRef Name="AssetId" />
+      </Principal>
+      <Dependent Role="Stocks">
+        <PropertyRef Name="AssetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Stock_Desposal">
+    <End Role="Desposal" Type="Self.Desposal" Multiplicity="0..1" />
+    <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Desposal">
+        <PropertyRef Name="DesposalId" />
+      </Principal>
+      <Dependent Role="Stocks">
+        <PropertyRef Name="DesposalId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Stock_Maintenance">
+    <End Role="Maintenance" Type="Self.Maintenance" Multiplicity="0..1" />
+    <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Maintenance">
+        <PropertyRef Name="MaintenanceId" />
+      </Principal>
+      <Dependent Role="Stocks">
+        <PropertyRef Name="MaintenanceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Stock_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Stocks">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Stock_Vendor">
+    <End Role="Vendors" Type="Self.Vendor" Multiplicity="1" />
+    <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendors">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="Stocks">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FixAssetDB" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AssetAssigns" EntityType="Self.AssetAssign" />
+    <EntitySet Name="Assets" EntityType="Self.Asset" />
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Desposals" EntityType="Self.Desposal" />
+    <EntitySet Name="Maintenances" EntityType="Self.Maintenance" />
+    <EntitySet Name="Stocks" EntityType="Self.Stock" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="Vendors" EntityType="Self.Vendor" />
+    <AssociationSet Name="FK_Asset_Assign_Stock" Association="Self.FK_Asset_Assign_Stock">
+      <End Role="Stocks" EntitySet="Stocks" />
+      <End Role="AssetAssign" EntitySet="AssetAssigns" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Asset_Assign_Users" Association="Self.FK_Asset_Assign_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="AssetAssign" EntitySet="AssetAssigns" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Assets_Category" Association="Self.FK_Assets_Category">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Assets" EntitySet="Assets" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Stocks_Assets" Association="Self.FK_Stocks_Assets">
+      <End Role="Assets" EntitySet="Assets" />
+      <End Role="Stocks" EntitySet="Stocks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Stock_Desposal" Association="Self.FK_Stock_Desposal">
+      <End Role="Desposal" EntitySet="Desposals" />
+      <End Role="Stocks" EntitySet="Stocks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Stock_Maintenance" Association="Self.FK_Stock_Maintenance">
+      <End Role="Maintenance" EntitySet="Maintenances" />
+      <End Role="Stocks" EntitySet="Stocks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Stock_Users" Association="Self.FK_Stock_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Stocks" EntitySet="Stocks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Stock_Vendor" Association="Self.FK_Stock_Vendor">
+      <End Role="Vendors" EntitySet="Vendors" />
+      <End Role="Stocks" EntitySet="Stocks" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
