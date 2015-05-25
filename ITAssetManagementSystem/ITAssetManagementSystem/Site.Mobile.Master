@@ -5,7 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta name="viewport" content="width=device-width" />
-    <title></title>
+    <title>
+        Information Technology Asset Management
+    </title>
     <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
 </head>
 <body>

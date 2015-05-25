@@ -22,3 +22,28 @@ D:\Devlopment\Undone Project\ITAssetManagementSystem\ITAssetManagementSystem\bin
 D:\Devlopment\Undone Project\ITAssetManagementSystem\ITAssetManagementSystem\bin\Microsoft.AspNet.FriendlyUrls.xml
 D:\Devlopment\Undone Project\ITAssetManagementSystem\ITAssetManagementSystem\obj\Debug\ITAssetManagementSystem.dll
 D:\Devlopment\Undone Project\ITAssetManagementSystem\ITAssetManagementSystem\obj\Debug\ITAssetManagementSystem.pdb
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\ITAssetManagementSystem.dll.config
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\ITAssetManagementSystem.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\ITAssetManagementSystem.pdb
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\Antlr3.Runtime.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\AspNet.ScriptManager.bootstrap.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\AspNet.ScriptManager.jQuery.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\EntityFramework.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\EntityFramework.SqlServer.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\Microsoft.AspNet.FriendlyUrls.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\Microsoft.AspNet.Web.Optimization.WebForms.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\Microsoft.ScriptManager.MSAjax.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\Microsoft.ScriptManager.WebForms.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\Newtonsoft.Json.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\System.Web.Optimization.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\WebGrease.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\EntityFramework.xml
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\EntityFramework.SqlServer.xml
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\System.Web.Optimization.xml
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\Antlr3.Runtime.pdb
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\Newtonsoft.Json.xml
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\bin\Microsoft.AspNet.FriendlyUrls.xml
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\obj\Debug\ITAssetManagementApps.csprojResolveAssemblyReference.cache
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\obj\Debug\ITAssetManagementSystem.dll
+C:\Users\BDRND2\Source\Repos\AssetManagementSystem\ITAssetManagementSystem\ITAssetManagementSystem\obj\Debug\ITAssetManagementSystem.pdb
