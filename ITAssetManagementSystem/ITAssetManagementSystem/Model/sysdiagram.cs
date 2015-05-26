@@ -12,20 +12,12 @@ namespace ITAssetManagementSystem.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Category
+    public partial class sysdiagram
     {
-        public Category()
-        {
-            this.Assets = new HashSet<Asset>();
-            this.Categories1 = new HashSet<Category>();
-        }
-    
-        public int CategoryId { get; set; }
-        public string CategoryTitle { get; set; }
-        public Nullable<int> ParentCategoryId { get; set; }
-    
-        public virtual ICollection<Asset> Assets { get; set; }
-        public virtual ICollection<Category> Categories1 { get; set; }
-        public virtual Category Category1 { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

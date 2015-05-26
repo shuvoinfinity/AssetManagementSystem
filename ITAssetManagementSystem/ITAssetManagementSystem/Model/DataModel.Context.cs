@@ -33,5 +33,6 @@ namespace ITAssetManagementSystem.Model
         public virtual DbSet<Stock> Stocks { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Vendor> Vendors { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

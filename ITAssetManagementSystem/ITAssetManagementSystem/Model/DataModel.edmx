@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FixAssetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FixAssetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AssetAssign">
           <Key>
             <PropertyRef Name="AssetAssingId" />
@@ -35,6 +35,7 @@
           </Key>
           <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryTitle" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParentCategoryId" Type="int" />
         </EntityType>
         <EntityType Name="Desposal">
           <Key>
@@ -75,6 +76,16 @@
           <Property Name="UserAssignDate" Type="date" />
           <Property Name="MaintenanceId" Type="int" />
           <Property Name="DesposalId" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -132,6 +143,18 @@
             </Principal>
             <Dependent Role="Assets">
               <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Categories_Categories1">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Categories1" Type="Self.Categories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Categories1">
+              <PropertyRef Name="ParentCategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -202,6 +225,7 @@
           <EntitySet Name="Desposal" EntityType="Self.Desposal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Maintenance" EntityType="Self.Maintenance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Stocks" EntityType="Self.Stocks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vendors" EntityType="Self.Vendors" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Asset_Assign_Stock" Association="Self.FK_Asset_Assign_Stock">
@@ -215,6 +239,10 @@
           <AssociationSet Name="FK_Assets_Category" Association="Self.FK_Assets_Category">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="Assets" EntitySet="Assets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Categories_Categories1" Association="Self.FK_Categories_Categories1">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Categories1" EntitySet="Categories" />
           </AssociationSet>
           <AssociationSet Name="FK_Stock_Desposal" Association="Self.FK_Stock_Desposal">
             <End Role="Desposal" EntitySet="Desposal" />
@@ -237,8 +265,7 @@
             <End Role="Stocks" EntitySet="Stocks" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FixAssetDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -277,6 +304,9 @@
           <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Assets" Relationship="Self.FK_Assets_Category" FromRole="Categories" ToRole="Assets" />
+          <Property Name="ParentCategoryId" Type="Int32" />
+          <NavigationProperty Name="Categories1" Relationship="FixAssetDBModel.FK_Categories_Categories1" FromRole="Category" ToRole="Category1" />
+          <NavigationProperty Name="Category1" Relationship="FixAssetDBModel.FK_Categories_Categories1" FromRole="Category1" ToRole="Category" />
         </EntityType>
         <EntityType Name="Desposal">
           <Key>
@@ -489,7 +519,34 @@
             <End Role="Vendors" EntitySet="Vendors" />
             <End Role="Stocks" EntitySet="Stocks" />
           </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="FixAssetDBModel.sysdiagram" />
+          <AssociationSet Name="FK_Categories_Categories1" Association="FixAssetDBModel.FK_Categories_Categories1">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Category1" EntitySet="Categories" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Categories_Categories1">
+          <End Type="FixAssetDBModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="FixAssetDBModel.Category" Role="Category1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Category1">
+              <PropertyRef Name="ParentCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -525,6 +582,7 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="FixAssetDBModel.Category">
               <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="ParentCategoryId" ColumnName="ParentCategoryId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="CategoryTitle" ColumnName="CategoryTitle" />
               </MappingFragment>
@@ -595,6 +653,17 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FixAssetDBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

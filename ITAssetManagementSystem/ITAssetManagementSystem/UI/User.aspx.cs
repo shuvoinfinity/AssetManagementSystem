@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using ITAssetManagementSystem.BLL;
 using ITAssetManagementSystem.Model;
 
 namespace ITAssetManagementSystem.UI
@@ -21,17 +22,23 @@ namespace ITAssetManagementSystem.UI
         {
             try
             {
-                using (var db = new FixAssetDB())
-                {
-                    var users = db.Users.ToList();
-                    GridUsers.DataSource = users;
-                    GridUsers.DataBind();
-                }
+                GridUsers.DataSource=UserDataAccess.GetAllUsers();
+                GridUsers.DataBind();
+
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                lblUser.Text = "User Not Found";
+                lblUser.Text = e.Message;
             }
+        
         }
+
+        protected void GridUsers_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            string userId = e.Keys[0].ToString();
+            UserDataAccess.DeleteUser(userId);
+        }
+
+        
     }
 }
