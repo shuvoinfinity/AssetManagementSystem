@@ -15,7 +15,7 @@ namespace ITAssetManagementSystem.Model
     public partial class AssetAssign
     {
         public int AssetAssingId { get; set; }
-        public int UserId { get; set; }
+        public int EmployeeId { get; set; }
         public int StockId { get; set; }
         public System.DateTime AssignDate { get; set; }
         public Nullable<System.DateTime> ReturnDate { get; set; }
@@ -24,6 +24,6 @@ namespace ITAssetManagementSystem.Model
         public byte[] Remarks { get; set; }
     
         public virtual Stock Stock { get; set; }
-        public virtual User User { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

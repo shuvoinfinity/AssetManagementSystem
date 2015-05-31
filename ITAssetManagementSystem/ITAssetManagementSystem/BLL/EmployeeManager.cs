@@ -7,7 +7,7 @@ using ITAssetManagementSystem.Model;
 
 namespace ITAssetManagementSystem.BLL
 {
-    public class UserManager
+    public class EmployeeManager
     {
 
     }

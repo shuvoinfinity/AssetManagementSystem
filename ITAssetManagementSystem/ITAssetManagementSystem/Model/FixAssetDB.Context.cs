@@ -13,10 +13,10 @@ namespace ITAssetManagementSystem.Model
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class FixAssetDB : DbContext
+    public partial class FixAssetDBEntities : DbContext
     {
-        public FixAssetDB()
-            : base("name=FixAssetDB")
+        public FixAssetDBEntities()
+            : base("name=FixAssetDBEntities")
         {
         }
     
@@ -29,10 +29,10 @@ namespace ITAssetManagementSystem.Model
         public virtual DbSet<Asset> Assets { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Desposal> Desposals { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Maintenance> Maintenances { get; set; }
         public virtual DbSet<Stock> Stocks { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Vendor> Vendors { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<Vendor> Vendors { get; set; }
     }
 }

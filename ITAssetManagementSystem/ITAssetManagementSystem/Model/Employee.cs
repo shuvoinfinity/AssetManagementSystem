@@ -12,15 +12,15 @@ namespace ITAssetManagementSystem.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Employee
     {
-        public User()
+        public Employee()
         {
             this.AssetAssigns = new HashSet<AssetAssign>();
             this.Stocks = new HashSet<Stock>();
         }
     
-        public int UserId { get; set; }
+        public int EmployeeId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserEmail { get; set; }

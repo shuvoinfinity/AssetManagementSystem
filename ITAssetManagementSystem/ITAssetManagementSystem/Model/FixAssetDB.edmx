@@ -4,13 +4,13 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FixAssetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="FixAssetDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AssetAssign">
           <Key>
             <PropertyRef Name="AssetAssingId" />
           </Key>
           <Property Name="AssetAssingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
           <Property Name="StockId" Type="int" Nullable="false" />
           <Property Name="AssignDate" Type="date" Nullable="false" />
           <Property Name="ReturnDate" Type="date" />
@@ -46,6 +46,19 @@
           <Property Name="DesposalDate" Type="datetime" Nullable="false" />
           <Property Name="Note" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserEmail" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="MobileNumber" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Designation" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="DepartmentCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ExtentionNumber" Type="varchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="Maintenance">
           <Key>
             <PropertyRef Name="MaintenanceId" />
@@ -72,7 +85,7 @@
           <Property Name="Warranty" Type="int" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="DepartmentCode" Type="varchar" MaxLength="10" />
-          <Property Name="UserId" Type="int" />
+          <Property Name="EmployeeId" Type="int" />
           <Property Name="UserAssignDate" Type="date" />
           <Property Name="MaintenanceId" Type="int" />
           <Property Name="DesposalId" Type="int" />
@@ -86,19 +99,6 @@
           <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
-        <EntityType Name="Users">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FirstName" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="LastName" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="UserEmail" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="MobileNumber" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Designation" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="DepartmentCode" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="ExtentionNumber" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Vendors">
           <Key>
@@ -122,15 +122,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Asset_Assign_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+        <Association Name="FK_AssetAssign_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
           <End Role="AssetAssign" Type="Self.AssetAssign" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserId" />
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeId" />
             </Principal>
             <Dependent Role="AssetAssign">
-              <PropertyRef Name="UserId" />
+              <PropertyRef Name="EmployeeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -182,18 +182,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Stock_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <End Role="Stocks" Type="Self.Stocks" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Stocks">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Stock_Vendor">
           <End Role="Vendors" Type="Self.Vendors" Multiplicity="1" />
           <End Role="Stocks" Type="Self.Stocks" Multiplicity="*" />
@@ -218,22 +206,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Stocks_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Stocks" Type="Self.Stocks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Stocks">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="FixAssetDBModelStoreContainer">
           <EntitySet Name="AssetAssign" EntityType="Self.AssetAssign" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Assets" EntityType="Self.Assets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Desposal" EntityType="Self.Desposal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Maintenance" EntityType="Self.Maintenance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Stocks" EntityType="Self.Stocks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vendors" EntityType="Self.Vendors" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Asset_Assign_Stock" Association="Self.FK_Asset_Assign_Stock">
             <End Role="Stocks" EntitySet="Stocks" />
             <End Role="AssetAssign" EntitySet="AssetAssign" />
           </AssociationSet>
-          <AssociationSet Name="FK_Asset_Assign_Users" Association="Self.FK_Asset_Assign_Users">
-            <End Role="Users" EntitySet="Users" />
+          <AssociationSet Name="FK_AssetAssign_Employees" Association="Self.FK_AssetAssign_Employees">
+            <End Role="Employees" EntitySet="Employees" />
             <End Role="AssetAssign" EntitySet="AssetAssign" />
           </AssociationSet>
           <AssociationSet Name="FK_Assets_Category" Association="Self.FK_Assets_Category">
@@ -252,10 +252,6 @@
             <End Role="Maintenance" EntitySet="Maintenance" />
             <End Role="Stocks" EntitySet="Stocks" />
           </AssociationSet>
-          <AssociationSet Name="FK_Stock_Users" Association="Self.FK_Stock_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Stocks" EntitySet="Stocks" />
-          </AssociationSet>
           <AssociationSet Name="FK_Stock_Vendor" Association="Self.FK_Stock_Vendor">
             <End Role="Vendors" EntitySet="Vendors" />
             <End Role="Stocks" EntitySet="Stocks" />
@@ -264,8 +260,13 @@
             <End Role="Assets" EntitySet="Assets" />
             <End Role="Stocks" EntitySet="Stocks" />
           </AssociationSet>
+          <AssociationSet Name="FK_Stocks_Employees" Association="Self.FK_Stocks_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Stocks" EntitySet="Stocks" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FixAssetDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -274,7 +275,7 @@
             <PropertyRef Name="AssetAssingId" />
           </Key>
           <Property Name="AssetAssingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
           <Property Name="StockId" Type="Int32" Nullable="false" />
           <Property Name="AssignDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ReturnDate" Type="DateTime" Precision="0" />
@@ -282,7 +283,7 @@
           <Property Name="ConditionReturn" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Remarks" Type="Binary" MaxLength="50" FixedLength="false" />
           <NavigationProperty Name="Stock" Relationship="Self.FK_Asset_Assign_Stock" FromRole="AssetAssign" ToRole="Stocks" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Asset_Assign_Users" FromRole="AssetAssign" ToRole="Users" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_AssetAssign_Employees" FromRole="AssetAssign" ToRole="Employees" />
         </EntityType>
         <EntityType Name="Asset">
           <Key>
@@ -303,10 +304,10 @@
           </Key>
           <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Assets" Relationship="Self.FK_Assets_Category" FromRole="Categories" ToRole="Assets" />
           <Property Name="ParentCategoryId" Type="Int32" />
-          <NavigationProperty Name="Categories1" Relationship="FixAssetDBModel.FK_Categories_Categories1" FromRole="Category" ToRole="Category1" />
-          <NavigationProperty Name="Category1" Relationship="FixAssetDBModel.FK_Categories_Categories1" FromRole="Category1" ToRole="Category" />
+          <NavigationProperty Name="Assets" Relationship="Self.FK_Assets_Category" FromRole="Categories" ToRole="Assets" />
+          <NavigationProperty Name="Categories1" Relationship="Self.FK_Categories_Categories1" FromRole="Categories" ToRole="Categories1" />
+          <NavigationProperty Name="Category1" Relationship="Self.FK_Categories_Categories1" FromRole="Categories1" ToRole="Categories" />
         </EntityType>
         <EntityType Name="Desposal">
           <Key>
@@ -317,6 +318,21 @@
           <Property Name="DesposalDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Note" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Stocks" Relationship="Self.FK_Stock_Desposal" FromRole="Desposal" ToRole="Stocks" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserEmail" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MobileNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Designation" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepartmentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ExtentionNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AssetAssigns" Relationship="Self.FK_AssetAssign_Employees" FromRole="Employees" ToRole="AssetAssign" />
+          <NavigationProperty Name="Stocks" Relationship="Self.FK_Stocks_Employees" FromRole="Employees" ToRole="Stocks" />
         </EntityType>
         <EntityType Name="Maintenance">
           <Key>
@@ -345,31 +361,26 @@
           <Property Name="Warranty" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DepartmentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="UserId" Type="Int32" />
+          <Property Name="EmployeeId" Type="Int32" />
           <Property Name="UserAssignDate" Type="DateTime" Precision="0" />
           <Property Name="MaintenanceId" Type="Int32" />
           <Property Name="DesposalId" Type="Int32" />
           <NavigationProperty Name="AssetAssigns" Relationship="Self.FK_Asset_Assign_Stock" FromRole="Stocks" ToRole="AssetAssign" />
           <NavigationProperty Name="Asset" Relationship="Self.FK_Stocks_Assets" FromRole="Stocks" ToRole="Assets" />
           <NavigationProperty Name="Desposal" Relationship="Self.FK_Stock_Desposal" FromRole="Stocks" ToRole="Desposal" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Stocks_Employees" FromRole="Stocks" ToRole="Employees" />
           <NavigationProperty Name="Maintenance" Relationship="Self.FK_Stock_Maintenance" FromRole="Stocks" ToRole="Maintenance" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Stock_Users" FromRole="Stocks" ToRole="Users" />
           <NavigationProperty Name="Vendor" Relationship="Self.FK_Stock_Vendor" FromRole="Stocks" ToRole="Vendors" />
         </EntityType>
-        <EntityType Name="User">
+        <EntityType Name="sysdiagram">
           <Key>
-            <PropertyRef Name="UserId" />
+            <PropertyRef Name="diagram_id" />
           </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="UserEmail" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MobileNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Designation" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DepartmentCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ExtentionNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="AssetAssigns" Relationship="Self.FK_Asset_Assign_Users" FromRole="Users" ToRole="AssetAssign" />
-          <NavigationProperty Name="Stocks" Relationship="Self.FK_Stock_Users" FromRole="Users" ToRole="Stocks" />
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="Vendor">
           <Key>
@@ -394,15 +405,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Asset_Assign_Users">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
+        <Association Name="FK_AssetAssign_Employees">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
           <End Role="AssetAssign" Type="Self.AssetAssign" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserId" />
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeId" />
             </Principal>
             <Dependent Role="AssetAssign">
-              <PropertyRef Name="UserId" />
+              <PropertyRef Name="EmployeeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -430,6 +441,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Categories_Categories1">
+          <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Categories1" Type="Self.Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Categories1">
+              <PropertyRef Name="ParentCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Stock_Desposal">
           <End Role="Desposal" Type="Self.Desposal" Multiplicity="0..1" />
           <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
@@ -439,6 +462,18 @@
             </Principal>
             <Dependent Role="Stocks">
               <PropertyRef Name="DesposalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stocks_Employees">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Stocks">
+              <PropertyRef Name="EmployeeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -454,18 +489,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Stock_Users">
-          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
-          <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Stocks">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Stock_Vendor">
           <End Role="Vendors" Type="Self.Vendor" Multiplicity="1" />
           <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
@@ -478,21 +501,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="FixAssetDB" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="FixAssetDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AssetAssigns" EntityType="Self.AssetAssign" />
           <EntitySet Name="Assets" EntityType="Self.Asset" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Desposals" EntityType="Self.Desposal" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
           <EntitySet Name="Maintenances" EntityType="Self.Maintenance" />
           <EntitySet Name="Stocks" EntityType="Self.Stock" />
-          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="Vendors" EntityType="Self.Vendor" />
           <AssociationSet Name="FK_Asset_Assign_Stock" Association="Self.FK_Asset_Assign_Stock">
             <End Role="Stocks" EntitySet="Stocks" />
             <End Role="AssetAssign" EntitySet="AssetAssigns" />
           </AssociationSet>
-          <AssociationSet Name="FK_Asset_Assign_Users" Association="Self.FK_Asset_Assign_Users">
-            <End Role="Users" EntitySet="Users" />
+          <AssociationSet Name="FK_AssetAssign_Employees" Association="Self.FK_AssetAssign_Employees">
+            <End Role="Employees" EntitySet="Employees" />
             <End Role="AssetAssign" EntitySet="AssetAssigns" />
           </AssociationSet>
           <AssociationSet Name="FK_Assets_Category" Association="Self.FK_Assets_Category">
@@ -503,61 +527,38 @@
             <End Role="Assets" EntitySet="Assets" />
             <End Role="Stocks" EntitySet="Stocks" />
           </AssociationSet>
+          <AssociationSet Name="FK_Categories_Categories1" Association="Self.FK_Categories_Categories1">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Categories1" EntitySet="Categories" />
+          </AssociationSet>
           <AssociationSet Name="FK_Stock_Desposal" Association="Self.FK_Stock_Desposal">
             <End Role="Desposal" EntitySet="Desposals" />
+            <End Role="Stocks" EntitySet="Stocks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stocks_Employees" Association="Self.FK_Stocks_Employees">
+            <End Role="Employees" EntitySet="Employees" />
             <End Role="Stocks" EntitySet="Stocks" />
           </AssociationSet>
           <AssociationSet Name="FK_Stock_Maintenance" Association="Self.FK_Stock_Maintenance">
             <End Role="Maintenance" EntitySet="Maintenances" />
             <End Role="Stocks" EntitySet="Stocks" />
           </AssociationSet>
-          <AssociationSet Name="FK_Stock_Users" Association="Self.FK_Stock_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Stocks" EntitySet="Stocks" />
-          </AssociationSet>
           <AssociationSet Name="FK_Stock_Vendor" Association="Self.FK_Stock_Vendor">
             <End Role="Vendors" EntitySet="Vendors" />
             <End Role="Stocks" EntitySet="Stocks" />
           </AssociationSet>
-          <EntitySet Name="sysdiagrams" EntityType="FixAssetDBModel.sysdiagram" />
-          <AssociationSet Name="FK_Categories_Categories1" Association="FixAssetDBModel.FK_Categories_Categories1">
-            <End Role="Category" EntitySet="Categories" />
-            <End Role="Category1" EntitySet="Categories" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <Association Name="FK_Categories_Categories1">
-          <End Type="FixAssetDBModel.Category" Role="Category" Multiplicity="0..1" />
-          <End Type="FixAssetDBModel.Category" Role="Category1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="CategoryId" />
-            </Principal>
-            <Dependent Role="Category1">
-              <PropertyRef Name="ParentCategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="FixAssetDBModelStoreContainer" CdmEntityContainer="FixAssetDB">
+        <EntityContainerMapping StorageEntityContainer="FixAssetDBModelStoreContainer" CdmEntityContainer="FixAssetDBEntities">
           <EntitySetMapping Name="AssetAssigns">
             <EntityTypeMapping TypeName="FixAssetDBModel.AssetAssign">
               <MappingFragment StoreEntitySet="AssetAssign">
                 <ScalarProperty Name="AssetAssingId" ColumnName="AssetAssingId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="StockId" ColumnName="StockId" />
                 <ScalarProperty Name="AssignDate" ColumnName="AssignDate" />
                 <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
@@ -582,9 +583,9 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="FixAssetDBModel.Category">
               <MappingFragment StoreEntitySet="Categories">
-                <ScalarProperty Name="ParentCategoryId" ColumnName="ParentCategoryId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="CategoryTitle" ColumnName="CategoryTitle" />
+                <ScalarProperty Name="ParentCategoryId" ColumnName="ParentCategoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -595,6 +596,20 @@
                 <ScalarProperty Name="StockId" ColumnName="StockId" />
                 <ScalarProperty Name="DesposalDate" ColumnName="DesposalDate" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="FixAssetDBModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="ExtentionNumber" ColumnName="ExtentionNumber" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -624,24 +639,21 @@
                 <ScalarProperty Name="Warranty" ColumnName="Warranty" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="UserAssignDate" ColumnName="UserAssignDate" />
                 <ScalarProperty Name="MaintenanceId" ColumnName="MaintenanceId" />
                 <ScalarProperty Name="DesposalId" ColumnName="DesposalId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="FixAssetDBModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
-                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
-                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
-                <ScalarProperty Name="ExtentionNumber" ColumnName="ExtentionNumber" />
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FixAssetDBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -653,17 +665,6 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="FixAssetDBModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

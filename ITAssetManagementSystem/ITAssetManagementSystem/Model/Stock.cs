@@ -31,7 +31,7 @@ namespace ITAssetManagementSystem.Model
         public int Warranty { get; set; }
         public string Status { get; set; }
         public string DepartmentCode { get; set; }
-        public Nullable<int> UserId { get; set; }
+        public Nullable<int> EmployeeId { get; set; }
         public Nullable<System.DateTime> UserAssignDate { get; set; }
         public Nullable<int> MaintenanceId { get; set; }
         public Nullable<int> DesposalId { get; set; }
@@ -39,8 +39,8 @@ namespace ITAssetManagementSystem.Model
         public virtual ICollection<AssetAssign> AssetAssigns { get; set; }
         public virtual Asset Asset { get; set; }
         public virtual Desposal Desposal { get; set; }
+        public virtual Employee Employee { get; set; }
         public virtual Maintenance Maintenance { get; set; }
-        public virtual User User { get; set; }
         public virtual Vendor Vendor { get; set; }
     }
 }
