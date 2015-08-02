@@ -177,7 +177,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
-    <Content Include="UI\Employee.aspx" />
+    <Content Include="UI\Category.aspx" />
+    <Content Include="UI\EmployeeUI.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -201,6 +202,7 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="BLL\CategoryManager.cs" />
     <Compile Include="BLL\EmployeeManager.cs" />
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
@@ -228,6 +230,7 @@
     <Compile Include="Model\Category.cs">
       <DependentUpon>FixAssetDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\CategoryDataAccess.cs" />
     <Compile Include="Model\Desposal.cs">
       <DependentUpon>FixAssetDB.tt</DependentUpon>
     </Compile>
@@ -277,12 +280,19 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
-    <Compile Include="UI\Employee.aspx.cs">
-      <DependentUpon>Employee.aspx</DependentUpon>
+    <Compile Include="UI\Category.aspx.cs">
+      <DependentUpon>Category.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\Employee.aspx.designer.cs">
-      <DependentUpon>Employee.aspx</DependentUpon>
+    <Compile Include="UI\Category.aspx.designer.cs">
+      <DependentUpon>Category.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\EmployeeUI.aspx.cs">
+      <DependentUpon>EmployeeUI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\EmployeeUI.aspx.designer.cs">
+      <DependentUpon>EmployeeUI.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

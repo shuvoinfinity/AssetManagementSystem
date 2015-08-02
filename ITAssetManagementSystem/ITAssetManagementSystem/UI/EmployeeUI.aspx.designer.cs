@@ -10,7 +10,7 @@
 namespace ITAssetManagementSystem.UI {
     
     
-    public partial class Employee {
+    public partial class EmployeeUI {
         
         /// <summary>
         /// lblEmployee control.

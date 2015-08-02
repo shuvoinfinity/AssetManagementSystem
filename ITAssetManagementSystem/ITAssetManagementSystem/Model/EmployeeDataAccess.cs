@@ -18,14 +18,15 @@ namespace ITAssetManagementSystem.Model
                     return db.Employees.ToList();
                 }
             }
-            catch (Exception aException)
+            catch (Exception e)
             {
-
-                throw new Exception(aException.Message);
+                return new List<Employee>();
             }
+                
+            
         }
 
-        public static void SaveEmployeeInfo(Employee newEmployee)
+        public void SaveEmployeeInfo(Employee newEmployee)
         {
            using (var db = new FixAssetDBEntities())
             {
@@ -49,6 +50,42 @@ namespace ITAssetManagementSystem.Model
                     db.SaveChanges();
                 }
             }
+        }
+
+        public Employee FindAnEmployee(int employeeId)
+        {
+            //List<EmployeeUI> employees = new List<EmployeeUI>();
+            using (var db = new FixAssetDBEntities())
+                {
+                    //int empId = Int16.Parse(employeeId);
+                  var  anEmployee = (from emp in db.Employees
+                                      where emp.EmployeeId == employeeId
+                                      select emp).FirstOrDefault();
+                    return anEmployee;
+                }
+            
+        }
+
+        public void UpdateEmployee(Employee anEmployee)
+        {
+          
+            using (var db = new FixAssetDBEntities())
+                {
+                    //int empId = Int16.Parse(employeeId);
+                    
+                    db.SaveChanges();
+                }
+            
+        }
+
+        public bool HasThisEmployee(int empId)
+        {
+                using (var db = new FixAssetDBEntities())
+                {
+                    bool hasEmp = db.Employees.Any(x => x.EmployeeId == empId);
+                    return hasEmp;
+                }
+           
         }
     }
 }
